@@ -2,32 +2,55 @@
 class_name MotionInterpolator3D
 extends Node3D
 
+## Provides physics interpolation and damped motion to its child node.
+##
+## The child node's transform will be fully controlled by this node while it is enabled.
+
+## Interpolation mode.
 enum MotionMode {
+	## Applies linear physics interpolation.
 	PHYSICS_INTERPOLATION,
+	## Applies a smooth damping interpolation.
 	SMOOTH_DAMP,
 }
 
+## Process function.
 enum ProcessFunc {
+	## Update transforms during idle frame processing.
 	FRAME,
+	## Update transforms during physics frame processing.
 	PHYSICS,
 }
 
+## If not enabled, this node behaves like an unscripted Node2D.
 @export var enabled: bool = true
 
+## Interpolation mode. See [enum MotionMode].
 @export var motion_mode: MotionMode = MotionMode.PHYSICS_INTERPOLATION:
 	set(v):
 		motion_mode = v
 		notify_property_list_changed()
 		update_configuration_warnings()
 
+## If true, the child node's inital relative transform is kept.
 @export var keep_initial_offset: bool = true
 
 @export_group("Smoothing", "smoothing")
+
+## Smothing factor for positional motion.
 @export_range(0.0, 1.0, 0.01) var smoothing_position: float = 0.5
+
+## Smothing factor for rotation and scale motion.
 @export_range(0.0, 1.0, 0.01) var smoothing_rotation: float = 0.5
+
+## Scales the power applied to the smoothing parameters.
+## Useful for keeping the smoothing parameters easily editable in the inspector.
 @export_range(0.1, 100.0, 0.1) var smoothing_power_scale: float = 10.0
 
 @export_group("")
+
+## Process function. See [enum ProcessFunc].
+## [member MotionMode.PHYSICS_INTERPOLATION] requires [member ProcessFunc.FRAME].
 @export var process_func: ProcessFunc = ProcessFunc.FRAME:
 	set(v): process_func = v; update_configuration_warnings()
 
@@ -133,6 +156,7 @@ func _get_configuration_warnings():
 	
 	return result
 
+## Immediately teleports the child node to its target transform.
 func teleport() -> void:
 	_physics_interpolation_current_xform = global_transform * _offset_transform
 	_physics_interpolation_previous_xform = _physics_interpolation_current_xform

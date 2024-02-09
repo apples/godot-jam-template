@@ -1,18 +1,26 @@
 @tool
 class_name Future
 extends RefCounted
-
+## An async wrapper which allows awaiting multiple signals at once.
+##
 ## Usage:
 ## ```
-## await Future.all_signals([page_death.finished, book_anim.animation_finished]).done
+## var results = await Future.all_signals([some_signal, another_signal]).done
+## var some_signal_result = results[0]
+## var another_signal_result = results[1]
 ## ```
 
+## Emitted when all signals have been emitted.
+##
+## [param results]: an array containing the results of the signals
+## in the same order as they were provided.
 signal done(results: Array)
 
 var _results: Array = []
 
 var _remaining: int
 
+## Creates a Future which awaits all the given signals.
 static func all_signals(signals: Array[Signal]) -> Future:
 	var f := Future.new()
 	f._results.resize(signals.size())

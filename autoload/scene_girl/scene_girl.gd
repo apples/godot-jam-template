@@ -1,7 +1,20 @@
 extends Node
+## A scene changer which also handles transitions and loading screens.
+##
+## Default transitions and a loading screen are provided.
+## It is expected that these will be modified on a per-project basis.
+##
+## Transitions can also be overridden by each scene (see [method change_scene]).
+##
+## [member minimum_load_time] is used to force the loading screen to be show.
+## It will automatically be set to 0.0 in exported builds.
 
+## Emitted each frame to indicate loading progress ([param value] ranges from 0.0 to 1.0).
 signal load_progress(value: float)
 
+## Minimum time to show the loading screen for.
+## [signal load_progress] will be simulated with fake values.
+## Automatically set to 0.0 when running in an exported build.
 var minimum_load_time: float = 1.0
 
 var default_transition_scene: PackedScene = preload("res://autoload/scene_girl/default_scene_transition.tscn")
@@ -14,6 +27,8 @@ var _loading_screen: Node = null
 var _time_elapsed: float = 0.0
 
 func _ready() -> void:
+	if OS.has_feature("template"):
+		minimum_load_time = 0.0
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	set_process(false)
 
@@ -49,6 +64,24 @@ func _process(delta: float) -> void:
 			var next_scene = ResourceLoader.load_threaded_get(_pending_change_scene_file)
 			_finish_change_scene(next_scene.instantiate())
 
+## Initiates a scene change.
+##
+## Immediately pauses the scene and begins loading [param scene_file] in the background.
+##
+## First, the out transition will be played.
+## If the current scene has a node named "SceneTransition",
+## that node's "out" animation will be played.
+## Otherwise, [member default_transition_scene] is instantiated and its "out" animation is played.
+##
+## Then, the loading screen will be instantiated.
+## Note that the current scene is still loaded.
+##
+## When the [param scene_file] is done loading, the loading screen is freed,
+## and the scene is changed to the newly loaded scene.
+##
+## The "in" transition animation will be played using the same logic as the "out" animation.
+##
+## [param scene_file]: the file path to the PackedScene to be loaded.
 func change_scene(scene_file: String) -> void:
 	if _pending_change_scene_file:
 		push_error("Cannot change scene while another is pending.")

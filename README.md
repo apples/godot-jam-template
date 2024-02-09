@@ -30,7 +30,7 @@ Quick Overview
 
 | Name | Description
 |:--|:--
-| `Globals` | An empty global variable bag with a togglable debug overlay that displays all varaibles.
+| `Globals` | An empty global variable bag with a togglable debug overlay that displays all variables.
 | `MusicMan` | A music and sfx player which automates `AudioStreamPlayer` nodes.
 | `SceneGirl` | A scene changer which also handles transitions and loading screens.
 | `TestCameraManager` | Adds a simple controllable camera when running scenes in isolation.

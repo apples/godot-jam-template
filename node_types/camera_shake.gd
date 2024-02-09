@@ -1,19 +1,38 @@
 @tool
 class_name CameraShake
 extends Node
+## Used as a child node for a [class Camera2D] or [class Camera3D], provides two methods of camera shake.
+##
+## Implemented as a spring simulation with added noise.
+##
+## When used as a child of [class Camera2D], applies shake to [member Camera2D.offset].
+##
+## When used as a child of [class Camera3D],
+## applies shake to [member Camera3D.h_offset] and [member Camera3D.v_offset].
+##
+## Spring simulation uses h4tt3n's technique:
+## https://gamedev.net/tutorials/programming/math-and-physics/towards-a-simpler-stiffer-and-more-stable-spring-r3227/
+##
+## Spring simulation behavior is influenced by [member Engine.physics_ticks_per_second].
 
+## Spring coefficient. Values 0.25 and lower are recommended.
 @export_range(0.0, 1.0) var shake_spring_coef: float = 0.1
 
-@export_range(0.0, 1.0) var shake_spring_damp: float = 0.3
+## Spring damping coefficient. Values 1.0 and lower are recommended.
+@export_range(0.0, 2.0) var shake_spring_damp: float = 0.3
 
+## The maximum allowed offset for the spring simulation. Note that this does not affect rumble.
 @export var max_offset: Vector2 = Vector2(50, 50):
 	set(v): max_offset = v.clamp(Vector2.ZERO, Vector2.INF)
 
+## The maximum allowed velocity for the spring simulation. Note that this does not affect rumble.
 @export var max_velocity: Vector2 = Vector2(2000, 2000):
 	set(v): max_velocity = v.clamp(Vector2.ZERO, Vector2.INF)
 
+## How quickly the rumble moves through the noise.
 @export var rumble_speed: float = 10.0
 
+## The nosie to use for rumble.
 @export var rumble_noise: Noise = preload("res://node_types/camera_shake/default_camera_rumble_noise.tres"):
 	set(v): rumble_noise = v; update_configuration_warnings()
 
@@ -75,11 +94,18 @@ func _get_configuration_warnings() -> PackedStringArray:
 		result.append("rumble_noise is required for rumble()")
 	return result
 
+## Applies a velocity impulse to the spring simulation.
+##
+## [param impulse]: velocity impulse.
 func apply_impulse(impulse: Vector2) -> void:
 	_spring_velocity += impulse
 	if max_velocity:
 		_spring_velocity = _spring_velocity.clamp(-max_velocity, max_velocity)
 
+## Starts a rumble which decays over time. Replaces any existing rumble.
+##
+## [param intensity]: initial displacement.
+## [param duration]: decay duration in seconds.
 func rumble(intensity: float, duration: float) -> void:
 	if not rumble_noise:
 		push_error("CameraShake: rumble_noise is null, rumble() will have no effect.")

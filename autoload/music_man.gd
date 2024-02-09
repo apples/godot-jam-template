@@ -1,4 +1,8 @@
 extends Node
+## A music and sfx player which automates AudioStreamPlayer nodes.
+##
+## Music is played on the "Music" audio bus.
+## Sound effects are played on the "SFX" audio bus.
 
 var _player_music_front: AudioStreamPlayer
 var _player_music_back: AudioStreamPlayer
@@ -25,6 +29,14 @@ func _ready() -> void:
 	_player_music_back.bus = &"Music"
 	add_child(_player_music_back)
 
+## Plays a music stream with crossfading.
+##
+## Music is played on the "Music" audio bus.
+##
+## If the music stream is already playing, it will not be restarted.
+##
+## [param stream]: the music stream to play.
+## [param xfade]: crossfade duration in seconds.
 func music(stream: AudioStream, xfade: float = 1.0) -> void:
 	if _player_music_front.playing and _player_music_front.stream == stream:
 		return
@@ -59,6 +71,23 @@ func music(stream: AudioStream, xfade: float = 1.0) -> void:
 	_player_music_back.stream = null
 
 
+## Plays a sound effect. Does not support positional audio.
+##
+## Sound effects are played on the "SFX" audio bus.
+##
+## [param who] is typically either null to indicate a global sound effect,
+## or a node reference to indicate a sound effect coming from that node.
+## However, [param who] can really be anything you want to use as a key for [param max_polyphony].
+##
+## [param max_polyphony] indicates how many instances of this [param stream]
+## can be playing at once for a specific [param who].
+##
+## For each combination of [param stream] and [param who],
+## a single `AudioStreamPlayer` will be created.
+##
+## [param stream]: the sound effect stream to play.
+## [param who]: key for [param max_polyphony].
+## [param max_polyphony]: maximum simultaneous playbacks for the [param stream] and [param who].
 func sfx(stream: AudioStream, who = null, max_polyphony: int = 1) -> void:
 	assert(stream != null)
 	assert(max_polyphony >= 0)
