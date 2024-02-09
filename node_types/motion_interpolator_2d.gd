@@ -1,6 +1,6 @@
 @tool
-class_name MotionInterpolator3D
-extends Node3D
+class_name MotionInterpolator2D
+extends Node2D
 
 enum MotionMode {
 	PHYSICS_INTERPOLATION,
@@ -32,12 +32,12 @@ enum ProcessFunc {
 	set(v): process_func = v; update_configuration_warnings()
 
 
-var _offset_transform: Transform3D
+var _offset_transform: Transform2D
 
-var _physics_interpolation_previous_xform: Transform3D
-var _physics_interpolation_current_xform: Transform3D
+var _physics_interpolation_previous_xform: Transform2D
+var _physics_interpolation_current_xform: Transform2D
 
-var _smooth_damp_child_global_xform: Transform3D
+var _smooth_damp_child_global_xform: Transform2D
 
 func _ready():
 	if process_priority == 0:
@@ -49,15 +49,15 @@ func _ready():
 		return
 	
 	if get_child_count() != 1:
-		push_error("MotionInterpolator3D: must have exactly 1 child.")
+		push_error("MotionInterpolator2D: must have exactly 1 child.")
 	
 	if get_child_count() == 0:
 		return
 	
-	var child := get_child(0) as Node3D
+	var child := get_child(0) as Node2D
 	
 	if not child:
-		push_error("MotionInterpolator3D: child must be a Node3D.")
+		push_error("MotionInterpolator2D: child must be a Node2D.")
 		return
 	
 	if keep_initial_offset:
@@ -96,7 +96,7 @@ func _process_func(delta: float):
 	if get_child_count() != 1:
 		return
 	
-	var child: Node3D = get_child(0) as Node3D
+	var child: Node2D = get_child(0) as Node2D
 	
 	if not child:
 		return
@@ -108,9 +108,10 @@ func _process_func(delta: float):
 			var rotation_t := 1.0 - pow(smoothing_rotation, delta * smoothing_power_scale)
 			
 			var result_origin := _smooth_damp_child_global_xform.origin.lerp(target_xform.origin, position_t)
-			var result_basis := _smooth_damp_child_global_xform.basis.slerp(target_xform.basis, rotation_t)
+			var result_rotation := lerp_angle(_smooth_damp_child_global_xform.get_rotation(), target_xform.get_rotation(), rotation_t)
+			var result_scale := _smooth_damp_child_global_xform.get_scale().lerp(target_xform.get_scale(), rotation_t)
 			
-			_smooth_damp_child_global_xform = Transform3D(result_basis, result_origin)
+			_smooth_damp_child_global_xform = Transform2D(result_rotation, result_scale, 0.0, result_origin)
 			child.global_transform = _smooth_damp_child_global_xform
 		MotionMode.PHYSICS_INTERPOLATION:
 			child.global_transform = _physics_interpolation_previous_xform.interpolate_with(_physics_interpolation_current_xform, Engine.get_physics_interpolation_fraction())
@@ -125,8 +126,8 @@ func _get_configuration_warnings():
 	if get_child_count() != 1:
 		result.append("Must have exactly 1 child.")
 	
-	if get_child_count() != 0 and not get_child(0) is Node3D:
-		result.append("Child must be a Node3D.")
+	if get_child_count() != 0 and not get_child(0) is Node2D:
+		result.append("Child must be a Node2D.")
 	
 	if motion_mode == MotionMode.PHYSICS_INTERPOLATION and process_func == ProcessFunc.PHYSICS:
 		result.append("Using PHYSICS_INTERPOLATION in the PHYSICS process_func won't have any effect. Use FRAME process_func instead.")
@@ -141,7 +142,7 @@ func teleport() -> void:
 	if get_child_count() != 1:
 		return
 	
-	var child: Node3D = get_child(0) as Node3D
+	var child: Node2D = get_child(0) as Node2D
 	
 	if not child:
 		return

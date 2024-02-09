@@ -2,17 +2,9 @@
 class_name CameraShake
 extends Node
 
-@export_range(0.0, 1.0) var shake_spring_coef: float = 0.1:
-	set(v):
-		shake_spring_coef = clamp(v, 0.0, 1.0)
-		if shake_spring_coef > shake_spring_damp:
-			shake_spring_damp = shake_spring_coef
+@export_range(0.0, 1.0) var shake_spring_coef: float = 0.1
 
-@export_range(0.0, 1.0) var shake_spring_damp: float = 0.3:
-	set(v):
-		shake_spring_damp = clamp(v, 0.0, 1.0)
-		if shake_spring_damp < shake_spring_coef:
-			shake_spring_coef = shake_spring_damp
+@export_range(0.0, 1.0) var shake_spring_damp: float = 0.3
 
 @export var max_offset: Vector2 = Vector2(50, 50):
 	set(v): max_offset = v.clamp(Vector2.ZERO, Vector2.INF)
@@ -41,10 +33,13 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	var spring_offset := _previous_spring_offset.lerp(_spring_offset, Engine.get_physics_interpolation_fraction())
 	
-	_rumble_time += delta * rumble_speed
-	var rumble_offset := _rumble_intensity * Vector2(
-		rumble_noise.get_noise_1d(_rumble_time),
-		rumble_noise.get_noise_1d(_rumble_time + 54321.1))
+	var rumble_offset := Vector2.ZERO
+	
+	if rumble_noise:
+		_rumble_time += delta * rumble_speed
+		rumble_offset = _rumble_intensity * Vector2(
+			rumble_noise.get_noise_1d(_rumble_time),
+			rumble_noise.get_noise_1d(_rumble_time + 54321.1))
 	
 	var offset := spring_offset + rumble_offset
 	
@@ -77,7 +72,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 	if not (get_parent() is Camera2D or get_parent() is Camera3D):
 		result.append("Parent must be a Camera2D or Camera3D")
 	if not rumble_noise:
-		result.append("rumble_noise is required")
+		result.append("rumble_noise is required for rumble()")
 	return result
 
 func apply_impulse(impulse: Vector2) -> void:
@@ -86,6 +81,9 @@ func apply_impulse(impulse: Vector2) -> void:
 		_spring_velocity = _spring_velocity.clamp(-max_velocity, max_velocity)
 
 func rumble(intensity: float, duration: float) -> void:
+	if not rumble_noise:
+		push_error("CameraShake: rumble_noise is null, rumble() will have no effect.")
+	
 	if _rumble_tween:
 		_rumble_tween.kill()
 	
