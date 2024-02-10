@@ -4,3 +4,6 @@ build/
 
 *.blend[0-9]
 
+# Inverse ignores
+!**/.gdignore
+
