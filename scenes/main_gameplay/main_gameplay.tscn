@@ -63,7 +63,7 @@ process_priority = 1
 process_physics_priority = 1
 script = ExtResource("5_drh8x")
 
-[node name="Icon" type="Sprite2D" parent="BouncingCharacterBody2D/MotionInterpolator2D"]
+[node name="Sprite" type="Sprite2D" parent="BouncingCharacterBody2D/MotionInterpolator2D"]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_kqmhi")
 
