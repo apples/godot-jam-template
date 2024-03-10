@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://d7688ndeh5ol"]
 
-[ext_resource type="Script" path="res://autoload/test_camera/test_camera_3d.gd" id="1_l0r5u"]
+[ext_resource type="Script" path="res://addons/test_camera/test_camera_3d.gd" id="1_l0r5u"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_174pf"]
 sky_top_color = Color(0.54902, 0.584314, 0.631373, 1)

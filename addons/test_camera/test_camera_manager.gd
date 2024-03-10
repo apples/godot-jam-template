@@ -13,8 +13,8 @@ extends Node
 ## The 2D camera has similar controls, but pans instead of orbits.
 ## It does not follow the visual objects in the scene.
 
-const TEST_CAMERA_2D = "res://autoload/test_camera/test_camera_2d.tscn"
-const TEST_CAMERA_3D = "res://autoload/test_camera/test_camera_3d.tscn"
+const TEST_CAMERA_2D = "res://addons/test_camera/test_camera_2d.tscn"
+const TEST_CAMERA_3D = "res://addons/test_camera/test_camera_3d.tscn"
 
 func _ready():
 	if OS.has_feature("template"):
