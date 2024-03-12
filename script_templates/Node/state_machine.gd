@@ -36,6 +36,9 @@ func _add_state(state_name: String) -> void:
 		physics_process = __opt_func("_state" + state_name + "_physics_process"),
 		enter = __opt_func("_state" + state_name + "_enter"),
 		exit = __opt_func("_state" + state_name + "_exit") }
+	if _states[state_name].values().count(Callable()) == 4:
+		push_warning("State %s has no state functions! Typo?" % [state_name])
+		breakpoint
 func _goto(state_name: StringName) -> void:
 	if _current_state and _states[_current_state].exit: _states[_current_state].exit()
 	_current_state = state_name

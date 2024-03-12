@@ -7,13 +7,14 @@ extends Node
 ## Displays a debug overlay when the user hits the F1 key.
 ## All variables are displayed automatically.
 
-
 ## Emitted when any variable changes.
 signal changed
+
 
 ## Example variable.
 var player_health: int = 0:
 	set(v): player_health = v; changed.emit()
+
 
 ## Reset all variables to their default state.
 func reset():
@@ -22,7 +23,6 @@ func reset():
 
 #region Debug overlay
 var _overlay
-
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.pressed:
 		match event.physical_keycode:
