@@ -10,6 +10,9 @@ Quick Overview
 > [!NOTE]
 > Classes are fully documented using GDScript documentation comments.
 
+> [!NOTE]
+> Many pre-made wiki pages are included which describe common conventions.
+
 ### Scenes
 
 | Name | Description
