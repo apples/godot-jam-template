@@ -27,10 +27,19 @@ jobs:
           echo "gitversion=$(git describe --always --long)" >> "$GITHUB_OUTPUT"
           cat "$GITHUB_OUTPUT"
 
-  export-windows:
-    name: Windows Export
-    runs-on: ubuntu-20.04
+  export-matrix:
+    strategy:
+      matrix:
+        os: [windows, linux, web]
+        include:
+          - os: windows
+            name: Windows Desktop
+          - os: linux
+            name: Linux/X11
+          - os: web
+            name: Web
     needs: configure-version
+    runs-on: ubuntu-20.04
     container:
       image: barichello/godot-ci:4.2.1
     steps:
@@ -42,62 +51,14 @@ jobs:
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
-      - name: Windows Build
+      - name: Build
         run: |
-          mkdir -v -p build/windows
-          godot --headless --verbose --export-release "Windows Desktop" build/windows/$EXPORT_NAME.exe
+          mkdir -v -p build/${{ matrix.os }}
+          godot --headless --verbose --export-release "${{ matrix.name }}"
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: windows-${{ needs.configure-version.outputs.gitversion }}
-          path: build/windows
-
-  export-linux:
-    name: Linux Export
-    runs-on: ubuntu-20.04
-    needs: configure-version
-    container:
-      image: barichello/godot-ci:4.2.1
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          lfs: true
-      - name: Setup
-        run: |
-          mkdir -v -p ~/.local/share/godot/export_templates
-          mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
-      - name: Linux Build
-        run: |
-          mkdir -v -p build/linux
-          godot --headless --verbose --export-release "Linux/X11" build/linux/$EXPORT_NAME.x86_64
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: linux-${{ needs.configure-version.outputs.gitversion }}
-          path: build/linux
-
-  export-web:
-    name: Web Export
-    runs-on: ubuntu-20.04
-    needs: configure-version
-    container:
-      image: barichello/godot-ci:4.2.1
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          lfs: true
-      - name: Setup
-        run: |
-          mkdir -v -p ~/.local/share/godot/export_templates
-          mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
-      - name: Web Build
-        run: |
-          mkdir -v -p build/web
-          godot --headless --verbose --export-release "Web" build/web/index.html
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: web-${{ needs.configure-version.outputs.gitversion }}
-          path: build/web
+          name: ${{ matrix.os }}-${{ needs.configure-version.outputs.gitversion }}
+          path: build/${{ matrix.os }}
+          
+    
