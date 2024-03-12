@@ -41,6 +41,12 @@ Quick Overview
 |:--|:--
 | `Future` | An async wrapper which allows awaiting multiple signals at once.
 
+### Addons
+
+| Name | Description
+|:--|:--
+| Cider Wiki | Adds the Wiki main screen tab.
+
 ### Project Settings Changes
 
 ```ini
