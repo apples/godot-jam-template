@@ -2,9 +2,10 @@
 [font s=24]Changing scenes[/font]
 
 Always use [code]SceneGirl[/code]:
-[code][bgcolor=black][color=white]
+
+[[code:gd]]
 SceneGirl.change_scene("res://scenes/gameplay/gameplay.tscn")
-[/color][/bgcolor][/code]
+[[/]]
 
 [font s=24]Loading screen[/font]
 
