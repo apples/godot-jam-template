@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cp08vj1dkhip1"]
 
-[ext_resource type="Script" path="res://autoload/globals/globals_overlay.gd" id="1_ol1gy"]
+[ext_resource type="Script" uid="uid://cd3ijpta4ruou" path="res://autoload/globals/globals_overlay.gd" id="1_ol1gy"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mtf8b"]
 bg_color = Color(0, 0, 0, 0.509804)

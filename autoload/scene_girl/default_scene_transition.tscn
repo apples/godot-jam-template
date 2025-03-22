@@ -83,9 +83,9 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ni0qf"]
 _data = {
-"RESET": SubResource("Animation_vdigl"),
-"in": SubResource("Animation_itlgt"),
-"out": SubResource("Animation_rsg1f")
+&"RESET": SubResource("Animation_vdigl"),
+&"in": SubResource("Animation_itlgt"),
+&"out": SubResource("Animation_rsg1f")
 }
 
 [sub_resource type="Shader" id="Shader_kt24k"]

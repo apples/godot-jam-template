@@ -1,10 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://c3rvm3rw6opg"]
+[gd_scene load_steps=10 format=3 uid="uid://c3rvm3rw6opg"]
 
-[ext_resource type="Script" path="res://node_types/camera_shake.gd" id="1_lrklj"]
-[ext_resource type="Script" path="res://scenes/main_gameplay/main_gameplay.gd" id="1_wt4mr"]
-[ext_resource type="Script" path="res://scenes/main_gameplay/character.gd" id="3_ksi3j"]
+[ext_resource type="Script" uid="uid://654itoswefaq" path="res://node_types/camera_shake.gd" id="1_lrklj"]
+[ext_resource type="Script" uid="uid://e274qojiifqq" path="res://scenes/main_gameplay/main_gameplay.gd" id="1_wt4mr"]
+[ext_resource type="Script" uid="uid://vefngtlhtmr0" path="res://scenes/main_gameplay/character.gd" id="3_ksi3j"]
 [ext_resource type="Texture2D" uid="uid://c7lc46m6g41vv" path="res://icon.svg" id="4_kqmhi"]
-[ext_resource type="Script" path="res://node_types/motion_interpolator_2d.gd" id="5_drh8x"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_fenso"]
 normal = Vector2(1, 0)
@@ -52,18 +51,15 @@ position = Vector2(478, 356)
 texture = ExtResource("4_kqmhi")
 
 [node name="BouncingCharacterBody2D" type="CharacterBody2D" parent="."]
+z_index = 1
 position = Vector2(478, 360)
 script = ExtResource("3_ksi3j")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BouncingCharacterBody2D"]
 shape = SubResource("CircleShape2D_5boca")
 
-[node name="MotionInterpolator2D" type="Node2D" parent="BouncingCharacterBody2D"]
-process_priority = 1
-process_physics_priority = 1
-script = ExtResource("5_drh8x")
-
-[node name="Sprite" type="Sprite2D" parent="BouncingCharacterBody2D/MotionInterpolator2D"]
+[node name="Sprite" type="Sprite2D" parent="BouncingCharacterBody2D"]
+z_index = -1
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_kqmhi")
 

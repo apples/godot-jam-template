@@ -1,0 +1,21 @@
+
+#region {state_name}
+@export_custom(CiderState.HINT, "{func_name}", CiderState.USAGE) var statedef_{func_name}
+
+func _{func_name}_enter() -> void:
+	pass
+
+func _{func_name}_exit() -> void:
+	pass
+
+func _{func_name}_process(delta: float) -> void:
+	pass
+
+func _{func_name}_physics_process(delta: float) -> void:
+	pass
+
+func _{func_name}_draw() -> void:
+	pass
+
+#endregion {state_name}
+

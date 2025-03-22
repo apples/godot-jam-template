@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c60eawv3jvb5j"]
 
-[ext_resource type="Script" path="res://autoload/scene_girl/default_loading_screen.gd" id="1_pn5vw"]
+[ext_resource type="Script" uid="uid://dekewai1jn2pi" path="res://autoload/scene_girl/default_loading_screen.gd" id="1_pn5vw"]
 
 [node name="DefaultLoadingScreen" type="CanvasLayer"]
 script = ExtResource("1_pn5vw")
@@ -27,7 +27,28 @@ grow_vertical = 0
 theme_override_constants/margin_right = 80
 theme_override_constants/margin_bottom = 50
 
-[node name="Label" type="Label" parent="Control/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Loading... 0%"
+text = "Loading..."
+
+[node name="PercentLabel" type="Label" parent="Control/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(108, 0)
+layout_mode = 2
+text = "100%"
+horizontal_alignment = 2
+
+[node name="Bar" type="Control" parent="Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0.0291667
+anchor_top = 0.951389
+anchor_right = 0.970833
+anchor_bottom = 0.961111
+grow_horizontal = 2
+grow_vertical = 0
+metadata/_edit_use_anchors_ = true

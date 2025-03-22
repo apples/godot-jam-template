@@ -1,0 +1,6 @@
+
+#region Cider State
+@onready var _cider_state = CiderState.create(self)
+func goto(state_name: StringName) -> void: _cider_state.goto(state_name)
+
+#endregion Cider State

@@ -17,7 +17,7 @@ func _on_how_to_play_button_pressed() -> void:
 	pass # Replace with function body.
 
 func _on_options_button_pressed() -> void:
-	pass # Replace with function body.
+	SceneGirl.change_scene("res://scenes/options/options.tscn")
 
 
 func _on_start_game_button_mouse_entered() -> void:
@@ -30,4 +30,3 @@ func _on_how_to_play_button_mouse_entered() -> void:
 
 func _on_options_button_mouse_entered() -> void:
 	options_button.grab_focus()
-

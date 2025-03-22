@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=7 format=3 uid="uid://cy6gwsvlnrel7"]
 
-[ext_resource type="FontFile" uid="uid://dv4y6a2mw7r2y" path="res://fonts/Silver_nodescent.ttf" id="1_pi0t0"]
+[ext_resource type="FontFile" uid="uid://ba2sqadr7at8k" path="res://assets/fonts/Beholden-Regular.ttf" id="1_c2e4w"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_js7gm"]
 content_margin_left = 20.0
@@ -49,7 +49,7 @@ corner_radius_bottom_left = 2
 
 [resource]
 Control/font_sizes/font_size = 38
-Control/fonts/font = ExtResource("1_pi0t0")
+Control/fonts/font = ExtResource("1_c2e4w")
 MainMenuButton/base_type = &"Button"
 MainMenuButton/styles/disabled = SubResource("StyleBoxEmpty_js7gm")
 MainMenuButton/styles/focus = SubResource("StyleBoxFlat_ejf61")

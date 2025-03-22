@@ -8,18 +8,32 @@ extends Node
 ## All variables are displayed automatically.
 
 ## Emitted when any variable changes.
-signal changed
-
+signal changed(prop_name: StringName)
 
 ## Example variable.
 var player_health: int = 0:
-	set(v): player_health = v; changed.emit()
+	set(v):
+		if player_health == v: return
+		player_health = v
+		_notify_changed(&"player_health")
 
 
 ## Reset all variables to their default state.
 func reset():
-	player_health = 0
+	for prop_name in _defaults:
+		set(prop_name, _defaults[prop_name])
 
+#region Plumbing
+var _defaults: Dictionary[StringName, Variant] = {}
+
+func _notify_changed(prop_name: StringName) -> void:
+	changed.emit(prop_name)
+
+func _init() -> void:
+	for prop in get_property_list():
+		if prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
+			_defaults[prop.name] = get(prop.name)
+#endregion
 
 #region Debug overlay
 var _overlay

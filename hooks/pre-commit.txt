@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+GODOT="godot"
+
+BEFORE_FILES=$(git ls-files -o --exclude-standard)
+"$GODOT" --import --headless
+AFTER_FILES=$(git ls-files -o --exclude-standard)
+
+if [ "$BEFORE_FILES" != "$AFTER_FILES" ]
+then
+	echo >&2 "Untracked files changed after import. Please review!"
+	exit 1
+fi
+

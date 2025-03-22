@@ -1,0 +1,6 @@
+
+The options screen scene: ([url]res://scenes/options/options.tscn[/url])
+
+This screen will automatically populate with exported fields from [url]res://autoload/globals/settings.gd[/url].
+
+The fields will be arranged into tabs based on the export group they're in.
